@@ -1,0 +1,100 @@
+﻿@{
+    ViewBag.Title = "Prueba Técnica";
+
+    List<SelectListItem> OptionsConceptos = ViewBag.OptionsConceptos;
+    List<SelectListItem> OptionsSolicitudes = ViewBag.OptionsSolicitudes;
+}
+
+<div class="card border-secondary mb-3" style="width: 100%;">
+    <div class="card-header">Nominas</div>
+    <div class="card-body text-secondary">
+        <form id="FormBusqueda" onsubmit="return false;">
+            <div class="form-row">
+                <div class="form-group col-md-5">
+                    <label for="busq-documento">Documento de identidad</label>
+                    <input type="text" required="required" class="form-control" id="busq-documento">
+                </div>
+                <div class="form-group col-md-2">
+                    <button type="submit" class="btn btn-primary">Buscar</button>
+                </div>
+            </div>
+        </form>
+        <br />
+        <br />
+        <br />
+        <table id="TableNomina" class="table table-striped">
+            <thead>
+                <tr>
+                    <th scope="col">Registro</th>
+                    <th scope="col">Código concepto</th>
+                    <th scope="col">Descripción concepto</th>
+                    <th scope="col">Id empleado</th>
+                    <th scope="col">Documento de identidad</th>
+                    <th scope="col">Apellidos</th>
+                    <th scope="col">Nombres</th>
+                    <th scope="col">Valor nomina</th>
+                    <th scope="col">Cantidad</th>
+                    <th scope="col">Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
+<!-- Modal Editar-->
+<div class="modal fade" id="ModalEditar" tabindex="-1" role="dialog" aria-labelledby="ModalEditarTitle" aria-hidden="true">
+    <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content">
+            <form id="FormEditar" onsubmit="return false;">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="ModalEditarTitle">Editar registro de N&oacute;mina</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <input id="Documento" name="Documento" type="hidden" />
+                    <div class="form-group">
+                        <label for="Registro">Registro</label>
+                        <input type="number" class="form-control" id="Registro" name="Registro">
+                    </div>
+                    <div class="form-group">
+                        <label for="IdEmpleado">Empleado</label>
+                        @Html.DropDownList("IdEmpleado", OptionsSolicitudes, new { @class = "form-control" });
+                    </div>
+                    <div class="form-group">
+                        <label for="IdConcepto">Concepto n&oacute;mina</label>
+                        @Html.DropDownList("IdConcepto", OptionsConceptos, new { @class = "form-control", @required = "required" });
+                    </div>
+                    <div class="form-group">
+                        <label for="ValorNomina">Valor n&oacute;mina</label>
+                        <input type="number" required="required" class="form-control" id="ValorNomina" name="ValorNomina">
+                    </div>
+                    <div class="form-group">
+                        <label for="Cantidad">Cantidad</label>
+                        <input type="number" required="required" class="form-control" id="Cantidad" name="Cantidad">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary close" data-dismiss="modal">Cerrar</button>
+                    <button type="submit" class="btn btn-primary">Guardar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

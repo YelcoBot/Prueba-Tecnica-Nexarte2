@@ -1,0 +1,342 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="PruebaNexarteModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="LOG_CONSULTA_NOM_NOMINA_DEFINITIVA">
+          <Key>
+            <PropertyRef Name="ID_REGISTRO" />
+          </Key>
+          <Property Name="ID_REGISTRO" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="USUARIO" Type="nvarchar" MaxLength="30" />
+          <Property Name="FECHA" Type="datetime" />
+          <Property Name="OPERACION" Type="nvarchar" MaxLength="10" />
+          <Property Name="DESCRIPCION_EVENTO" Type="nvarchar(max)" />
+        </EntityType>
+        <EntityType Name="NOM_CONCEPTOS_NOMINA">
+          <Key>
+            <PropertyRef Name="ID_CONCEPTO" />
+          </Key>
+          <Property Name="ID_CONCEPTO" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="DESC_CONCEPTO" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="COD_CONCEPTO" Type="nvarchar" MaxLength="10" Nullable="false" />
+        </EntityType>
+        <EntityType Name="NOM_EMPLEADOS">
+          <Key>
+            <PropertyRef Name="ID_EMPLEADO" />
+          </Key>
+          <Property Name="ID_EMPLEADO" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ID_SOLICITUD" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="NOM_NOMINA_DEFINITIVA">
+          <Key>
+            <PropertyRef Name="REGISTRO" />
+          </Key>
+          <Property Name="REGISTRO" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="FCH_CRE" Type="datetime" Nullable="false" />
+          <Property Name="ID_CONCEPTO" Type="int" Nullable="false" />
+          <Property Name="ID_EMPLEADO" Type="int" Nullable="false" />
+          <Property Name="VAL_NOMINA" Type="money" Nullable="false" />
+          <Property Name="CANTIDAD" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="REG_SOLICITUDES_INGRESOS">
+          <Key>
+            <PropertyRef Name="ID_SOLICITUD" />
+          </Key>
+          <Property Name="ID_SOLICITUD" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="DOCUMENTO" Type="nvarchar" MaxLength="25" Nullable="false" />
+          <Property Name="APELLIDOS" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="NOMBRES" Type="nvarchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_ID_CONCEPTO">
+          <End Role="NOM_CONCEPTOS_NOMINA" Type="Self.NOM_CONCEPTOS_NOMINA" Multiplicity="1" />
+          <End Role="NOM_NOMINA_DEFINITIVA" Type="Self.NOM_NOMINA_DEFINITIVA" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="NOM_CONCEPTOS_NOMINA">
+              <PropertyRef Name="ID_CONCEPTO" />
+            </Principal>
+            <Dependent Role="NOM_NOMINA_DEFINITIVA">
+              <PropertyRef Name="ID_CONCEPTO" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ID_EMPLEADO">
+          <End Role="NOM_EMPLEADOS" Type="Self.NOM_EMPLEADOS" Multiplicity="1" />
+          <End Role="NOM_NOMINA_DEFINITIVA" Type="Self.NOM_NOMINA_DEFINITIVA" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="NOM_EMPLEADOS">
+              <PropertyRef Name="ID_EMPLEADO" />
+            </Principal>
+            <Dependent Role="NOM_NOMINA_DEFINITIVA">
+              <PropertyRef Name="ID_EMPLEADO" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ID_SOLICITUD">
+          <End Role="REG_SOLICITUDES_INGRESOS" Type="Self.REG_SOLICITUDES_INGRESOS" Multiplicity="1" />
+          <End Role="NOM_EMPLEADOS" Type="Self.NOM_EMPLEADOS" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="REG_SOLICITUDES_INGRESOS">
+              <PropertyRef Name="ID_SOLICITUD" />
+            </Principal>
+            <Dependent Role="NOM_EMPLEADOS">
+              <PropertyRef Name="ID_SOLICITUD" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Function Name="USP_CONSULTA_NOMINA_POR_DOCUMENTO" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="DOC_IDENTIDAD" Type="varchar" Mode="In" />
+          <Parameter Name="Evento" Type="numeric" Mode="In" />
+          <Parameter Name="Usuario" Type="varchar" Mode="In" />
+          <Parameter Name="REGISTRO_NOM_NOMINA_DEFINITIVA" Type="numeric" Mode="In" />
+          <Parameter Name="ID_CONCEPTO" Type="int" Mode="In" />
+          <Parameter Name="VAL_NOMINA" Type="smallmoney" Mode="In" />
+          <Parameter Name="CANTIDAD" Type="int" Mode="In" />
+        </Function>
+        <EntityContainer Name="PruebaNexarteModelStoreContainer">
+          <EntitySet Name="LOG_CONSULTA_NOM_NOMINA_DEFINITIVA" EntityType="Self.LOG_CONSULTA_NOM_NOMINA_DEFINITIVA" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="NOM_CONCEPTOS_NOMINA" EntityType="Self.NOM_CONCEPTOS_NOMINA" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="NOM_EMPLEADOS" EntityType="Self.NOM_EMPLEADOS" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="NOM_NOMINA_DEFINITIVA" EntityType="Self.NOM_NOMINA_DEFINITIVA" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="REG_SOLICITUDES_INGRESOS" EntityType="Self.REG_SOLICITUDES_INGRESOS" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_ID_CONCEPTO" Association="Self.FK_ID_CONCEPTO">
+            <End Role="NOM_CONCEPTOS_NOMINA" EntitySet="NOM_CONCEPTOS_NOMINA" />
+            <End Role="NOM_NOMINA_DEFINITIVA" EntitySet="NOM_NOMINA_DEFINITIVA" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ID_EMPLEADO" Association="Self.FK_ID_EMPLEADO">
+            <End Role="NOM_EMPLEADOS" EntitySet="NOM_EMPLEADOS" />
+            <End Role="NOM_NOMINA_DEFINITIVA" EntitySet="NOM_NOMINA_DEFINITIVA" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ID_SOLICITUD" Association="Self.FK_ID_SOLICITUD">
+            <End Role="REG_SOLICITUDES_INGRESOS" EntitySet="REG_SOLICITUDES_INGRESOS" />
+            <End Role="NOM_EMPLEADOS" EntitySet="NOM_EMPLEADOS" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="PruebaNexarteModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="LOG_CONSULTA_NOM_NOMINA_DEFINITIVA">
+          <Key>
+            <PropertyRef Name="ID_REGISTRO" />
+          </Key>
+          <Property Name="ID_REGISTRO" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="USUARIO" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="FECHA" Type="DateTime" Precision="3" />
+          <Property Name="OPERACION" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="DESCRIPCION_EVENTO" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="NOM_CONCEPTOS_NOMINA">
+          <Key>
+            <PropertyRef Name="ID_CONCEPTO" />
+          </Key>
+          <Property Name="ID_CONCEPTO" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="DESC_CONCEPTO" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="COD_CONCEPTO" Type="String" MaxLength="10" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="NOM_NOMINA_DEFINITIVA" Relationship="Self.FK_ID_CONCEPTO" FromRole="NOM_CONCEPTOS_NOMINA" ToRole="NOM_NOMINA_DEFINITIVA" />
+        </EntityType>
+        <EntityType Name="NOM_EMPLEADOS">
+          <Key>
+            <PropertyRef Name="ID_EMPLEADO" />
+          </Key>
+          <Property Name="ID_EMPLEADO" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ID_SOLICITUD" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="NOM_NOMINA_DEFINITIVA" Relationship="Self.FK_ID_EMPLEADO" FromRole="NOM_EMPLEADOS" ToRole="NOM_NOMINA_DEFINITIVA" />
+          <NavigationProperty Name="REG_SOLICITUDES_INGRESOS" Relationship="Self.FK_ID_SOLICITUD" FromRole="NOM_EMPLEADOS" ToRole="REG_SOLICITUDES_INGRESOS" />
+        </EntityType>
+        <EntityType Name="NOM_NOMINA_DEFINITIVA">
+          <Key>
+            <PropertyRef Name="REGISTRO" />
+          </Key>
+          <Property Name="REGISTRO" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="FCH_CRE" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="ID_CONCEPTO" Type="Int32" Nullable="false" />
+          <Property Name="ID_EMPLEADO" Type="Int32" Nullable="false" />
+          <Property Name="VAL_NOMINA" Type="Decimal" Precision="19" Scale="4" Nullable="false" />
+          <Property Name="CANTIDAD" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="NOM_CONCEPTOS_NOMINA" Relationship="Self.FK_ID_CONCEPTO" FromRole="NOM_NOMINA_DEFINITIVA" ToRole="NOM_CONCEPTOS_NOMINA" />
+          <NavigationProperty Name="NOM_EMPLEADOS" Relationship="Self.FK_ID_EMPLEADO" FromRole="NOM_NOMINA_DEFINITIVA" ToRole="NOM_EMPLEADOS" />
+        </EntityType>
+        <EntityType Name="REG_SOLICITUDES_INGRESOS">
+          <Key>
+            <PropertyRef Name="ID_SOLICITUD" />
+          </Key>
+          <Property Name="ID_SOLICITUD" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="DOCUMENTO" Type="String" MaxLength="25" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="APELLIDOS" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="NOMBRES" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="NOM_EMPLEADOS" Relationship="Self.FK_ID_SOLICITUD" FromRole="REG_SOLICITUDES_INGRESOS" ToRole="NOM_EMPLEADOS" />
+        </EntityType>
+        <Association Name="FK_ID_CONCEPTO">
+          <End Role="NOM_CONCEPTOS_NOMINA" Type="Self.NOM_CONCEPTOS_NOMINA" Multiplicity="1" />
+          <End Role="NOM_NOMINA_DEFINITIVA" Type="Self.NOM_NOMINA_DEFINITIVA" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="NOM_CONCEPTOS_NOMINA">
+              <PropertyRef Name="ID_CONCEPTO" />
+            </Principal>
+            <Dependent Role="NOM_NOMINA_DEFINITIVA">
+              <PropertyRef Name="ID_CONCEPTO" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ID_EMPLEADO">
+          <End Role="NOM_EMPLEADOS" Type="Self.NOM_EMPLEADOS" Multiplicity="1" />
+          <End Role="NOM_NOMINA_DEFINITIVA" Type="Self.NOM_NOMINA_DEFINITIVA" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="NOM_EMPLEADOS">
+              <PropertyRef Name="ID_EMPLEADO" />
+            </Principal>
+            <Dependent Role="NOM_NOMINA_DEFINITIVA">
+              <PropertyRef Name="ID_EMPLEADO" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ID_SOLICITUD">
+          <End Role="REG_SOLICITUDES_INGRESOS" Type="Self.REG_SOLICITUDES_INGRESOS" Multiplicity="1" />
+          <End Role="NOM_EMPLEADOS" Type="Self.NOM_EMPLEADOS" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="REG_SOLICITUDES_INGRESOS">
+              <PropertyRef Name="ID_SOLICITUD" />
+            </Principal>
+            <Dependent Role="NOM_EMPLEADOS">
+              <PropertyRef Name="ID_SOLICITUD" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="PruebaNexarteEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="LOG_CONSULTA_NOM_NOMINA_DEFINITIVA" EntityType="Self.LOG_CONSULTA_NOM_NOMINA_DEFINITIVA" />
+          <EntitySet Name="NOM_CONCEPTOS_NOMINA" EntityType="Self.NOM_CONCEPTOS_NOMINA" />
+          <EntitySet Name="NOM_EMPLEADOS" EntityType="Self.NOM_EMPLEADOS" />
+          <EntitySet Name="NOM_NOMINA_DEFINITIVA" EntityType="Self.NOM_NOMINA_DEFINITIVA" />
+          <EntitySet Name="REG_SOLICITUDES_INGRESOS" EntityType="Self.REG_SOLICITUDES_INGRESOS" />
+          <AssociationSet Name="FK_ID_CONCEPTO" Association="Self.FK_ID_CONCEPTO">
+            <End Role="NOM_CONCEPTOS_NOMINA" EntitySet="NOM_CONCEPTOS_NOMINA" />
+            <End Role="NOM_NOMINA_DEFINITIVA" EntitySet="NOM_NOMINA_DEFINITIVA" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ID_EMPLEADO" Association="Self.FK_ID_EMPLEADO">
+            <End Role="NOM_EMPLEADOS" EntitySet="NOM_EMPLEADOS" />
+            <End Role="NOM_NOMINA_DEFINITIVA" EntitySet="NOM_NOMINA_DEFINITIVA" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ID_SOLICITUD" Association="Self.FK_ID_SOLICITUD">
+            <End Role="REG_SOLICITUDES_INGRESOS" EntitySet="REG_SOLICITUDES_INGRESOS" />
+            <End Role="NOM_EMPLEADOS" EntitySet="NOM_EMPLEADOS" />
+          </AssociationSet>
+          <FunctionImport Name="USP_CONSULTA_NOMINA_POR_DOCUMENTO" ReturnType="Collection(PruebaNexarteModel.USP_CONSULTA_NOMINA_POR_DOCUMENTO_Result)">
+            <Parameter Name="DOC_IDENTIDAD" Mode="In" Type="String" />
+            <Parameter Name="Evento" Mode="In" Type="Decimal" />
+            <Parameter Name="Usuario" Mode="In" Type="String" />
+            <Parameter Name="REGISTRO_NOM_NOMINA_DEFINITIVA" Mode="In" Type="Decimal" />
+            <Parameter Name="ID_CONCEPTO" Mode="In" Type="Int32" />
+            <Parameter Name="VAL_NOMINA" Mode="In" Type="Decimal" />
+            <Parameter Name="CANTIDAD" Mode="In" Type="Int32" />
+          </FunctionImport>
+        </EntityContainer>
+        <ComplexType Name="USP_CONSULTA_NOMINA_POR_DOCUMENTO_Result">
+          <Property Type="Int32" Name="REGISTRO" Nullable="false" />
+          <Property Type="String" Name="COD_CONCEPTO" Nullable="false" MaxLength="10" />
+          <Property Type="String" Name="DESC_CONCEPTO" Nullable="false" MaxLength="100" />
+          <Property Type="Int32" Name="ID_EMPLEADO" Nullable="false" />
+          <Property Type="String" Name="DOCUMENTO" Nullable="false" MaxLength="25" />
+          <Property Type="String" Name="APELLIDOS" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="NOMBRES" Nullable="false" MaxLength="50" />
+          <Property Type="Decimal" Name="VAL_NOMINA" Nullable="false" Precision="19" />
+          <Property Type="Int32" Name="CANTIDAD" Nullable="false" />
+        </ComplexType>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="PruebaNexarteModelStoreContainer" CdmEntityContainer="PruebaNexarteEntities">
+          <EntitySetMapping Name="LOG_CONSULTA_NOM_NOMINA_DEFINITIVA">
+            <EntityTypeMapping TypeName="PruebaNexarteModel.LOG_CONSULTA_NOM_NOMINA_DEFINITIVA">
+              <MappingFragment StoreEntitySet="LOG_CONSULTA_NOM_NOMINA_DEFINITIVA">
+                <ScalarProperty Name="ID_REGISTRO" ColumnName="ID_REGISTRO" />
+                <ScalarProperty Name="USUARIO" ColumnName="USUARIO" />
+                <ScalarProperty Name="FECHA" ColumnName="FECHA" />
+                <ScalarProperty Name="OPERACION" ColumnName="OPERACION" />
+                <ScalarProperty Name="DESCRIPCION_EVENTO" ColumnName="DESCRIPCION_EVENTO" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="NOM_CONCEPTOS_NOMINA">
+            <EntityTypeMapping TypeName="PruebaNexarteModel.NOM_CONCEPTOS_NOMINA">
+              <MappingFragment StoreEntitySet="NOM_CONCEPTOS_NOMINA">
+                <ScalarProperty Name="ID_CONCEPTO" ColumnName="ID_CONCEPTO" />
+                <ScalarProperty Name="DESC_CONCEPTO" ColumnName="DESC_CONCEPTO" />
+                <ScalarProperty Name="COD_CONCEPTO" ColumnName="COD_CONCEPTO" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="NOM_EMPLEADOS">
+            <EntityTypeMapping TypeName="PruebaNexarteModel.NOM_EMPLEADOS">
+              <MappingFragment StoreEntitySet="NOM_EMPLEADOS">
+                <ScalarProperty Name="ID_EMPLEADO" ColumnName="ID_EMPLEADO" />
+                <ScalarProperty Name="ID_SOLICITUD" ColumnName="ID_SOLICITUD" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="NOM_NOMINA_DEFINITIVA">
+            <EntityTypeMapping TypeName="PruebaNexarteModel.NOM_NOMINA_DEFINITIVA">
+              <MappingFragment StoreEntitySet="NOM_NOMINA_DEFINITIVA">
+                <ScalarProperty Name="REGISTRO" ColumnName="REGISTRO" />
+                <ScalarProperty Name="FCH_CRE" ColumnName="FCH_CRE" />
+                <ScalarProperty Name="ID_CONCEPTO" ColumnName="ID_CONCEPTO" />
+                <ScalarProperty Name="ID_EMPLEADO" ColumnName="ID_EMPLEADO" />
+                <ScalarProperty Name="VAL_NOMINA" ColumnName="VAL_NOMINA" />
+                <ScalarProperty Name="CANTIDAD" ColumnName="CANTIDAD" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="REG_SOLICITUDES_INGRESOS">
+            <EntityTypeMapping TypeName="PruebaNexarteModel.REG_SOLICITUDES_INGRESOS">
+              <MappingFragment StoreEntitySet="REG_SOLICITUDES_INGRESOS">
+                <ScalarProperty Name="ID_SOLICITUD" ColumnName="ID_SOLICITUD" />
+                <ScalarProperty Name="DOCUMENTO" ColumnName="DOCUMENTO" />
+                <ScalarProperty Name="APELLIDOS" ColumnName="APELLIDOS" />
+                <ScalarProperty Name="NOMBRES" ColumnName="NOMBRES" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="USP_CONSULTA_NOMINA_POR_DOCUMENTO" FunctionName="PruebaNexarteModel.Store.USP_CONSULTA_NOMINA_POR_DOCUMENTO">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="PruebaNexarteModel.USP_CONSULTA_NOMINA_POR_DOCUMENTO_Result">
+                <ScalarProperty Name="REGISTRO" ColumnName="REGISTRO" />
+                <ScalarProperty Name="COD_CONCEPTO" ColumnName="COD_CONCEPTO" />
+                <ScalarProperty Name="DESC_CONCEPTO" ColumnName="DESC_CONCEPTO" />
+                <ScalarProperty Name="ID_EMPLEADO" ColumnName="ID_EMPLEADO" />
+                <ScalarProperty Name="DOCUMENTO" ColumnName="DOCUMENTO" />
+                <ScalarProperty Name="APELLIDOS" ColumnName="APELLIDOS" />
+                <ScalarProperty Name="NOMBRES" ColumnName="NOMBRES" />
+                <ScalarProperty Name="VAL_NOMINA" ColumnName="VAL_NOMINA" />
+                <ScalarProperty Name="CANTIDAD" ColumnName="CANTIDAD" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="Ninguno" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

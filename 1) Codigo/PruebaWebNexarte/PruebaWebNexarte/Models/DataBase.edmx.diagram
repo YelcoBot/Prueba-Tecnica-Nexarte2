@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="eb0dd336aae543c1b02131fdbc451160" Name="Diagram1">
+        <EntityTypeShape EntityType="PruebaNexarteModel.LOG_CONSULTA_NOM_NOMINA_DEFINITIVA" Width="1.5" PointX="5.75" PointY="4.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="PruebaNexarteModel.NOM_CONCEPTOS_NOMINA" Width="1.5" PointX="3" PointY="5.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="PruebaNexarteModel.NOM_EMPLEADOS" Width="1.5" PointX="3" PointY="1.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="PruebaNexarteModel.NOM_NOMINA_DEFINITIVA" Width="1.5" PointX="5.25" PointY="1" IsExpanded="true" />
+        <EntityTypeShape EntityType="PruebaNexarteModel.REG_SOLICITUDES_INGRESOS" Width="1.5" PointX="0.75" PointY="1.25" IsExpanded="true" />
+        <AssociationConnector Association="PruebaNexarteModel.FK_ID_CONCEPTO" ManuallyRouted="false" />
+        <AssociationConnector Association="PruebaNexarteModel.FK_ID_EMPLEADO" ManuallyRouted="false" />
+        <AssociationConnector Association="PruebaNexarteModel.FK_ID_SOLICITUD" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>
